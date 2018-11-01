@@ -18,7 +18,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "aws s3 sync build/ s3://summitcreek-kids-slideshow"
+    "deploy": "aws s3 sync build/ s3://summitcreek-kids-slideshow",
+    "visit": "open http://summitcreek-kids-slideshow.s3-website-us-east-1.amazonaws.com/?token=$DROPBOX_TOKEN"
   },
   "eslintConfig": {
     "extends": "react-app"
