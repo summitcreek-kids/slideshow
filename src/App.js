@@ -50,10 +50,20 @@ const selectFolder = (folders, resolve, reject) => {
 
 const getFiles = (files, resolve, reject) => {
   return Promise.all(files.entries.map((entry) => {
-    console.log(`Downloading ${entry.path_display}`);
+    const cached = localStorage.getItem(entry.content_hash);
+    if (cached) {
+      console.log("Using cached image");
+      return Promise.resolve(cached);
+    }
 
+    console.log(`Downloading ${entry.path_display}`);
     return dbx.filesDownload({ path: entry.path_display })
-      .then((result) => window.URL.createObjectURL(result.fileBlob))
+      .then((result) => {
+        console.log("Adding to cache");
+        let value = window.URL.createObjectURL(result.fileBlob);
+        localStorage.setItem(entry.content_hash, value);
+        return value;
+      })
       .catch((error) => reject(error));
   })).then((result) => resolve(result))
     .catch((error) => reject(error));
