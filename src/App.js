@@ -51,18 +51,18 @@ const selectFolder = (folders, resolve, reject) => {
 
 const getFiles = (files, resolve, reject) => {
   return Promise.all(_.sortBy(files.entries, "path_display").map((entry) => {
-    const cached = localStorage.getItem(entry.content_hash);
-    if (cached) {
-      console.log("Using cached image");
-      return Promise.resolve(cached);
-    }
+    // const cached = localStorage.getItem(entry.content_hash);
+    // if (cached) {
+    //   console.log("Using cached image");
+    //   return Promise.resolve(cached);
+    // }
 
     console.log(`Downloading ${entry.path_display}`);
     return dbx.filesDownload({ path: entry.path_display })
       .then((result) => {
-        console.log("Adding to cache");
         let value = window.URL.createObjectURL(result.fileBlob);
-        localStorage.setItem(entry.content_hash, value);
+        // console.log("Adding to cache");
+        // localStorage.setItem(entry.content_hash, value);
         return value;
       })
       .catch((error) => reject(error));
