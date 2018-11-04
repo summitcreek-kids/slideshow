@@ -4,6 +4,7 @@ import { Dropbox } from "dropbox";
 import Async from "react-async";
 import queryString from "query-string";
 import dateFormat from "dateformat";
+import _ from "underscore";
 
 const params = queryString.parse(window.location.search);
 const token = params.token;
@@ -49,7 +50,7 @@ const selectFolder = (folders, resolve, reject) => {
 };
 
 const getFiles = (files, resolve, reject) => {
-  return Promise.all(files.entries.map((entry) => {
+  return Promise.all(_.sortBy(files.entries, "path_display").map((entry) => {
     const cached = localStorage.getItem(entry.content_hash);
     if (cached) {
       console.log("Using cached image");
